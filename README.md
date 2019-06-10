@@ -16,7 +16,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
 
 ## Required Libs and Environment
 * Python 3.6
-* OpenCV 3.4.2 for Swift Features
+* OpenCV 3.4.2 for SIFT
 * Numpy
 * matplotlib (optional)
 

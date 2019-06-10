@@ -39,7 +39,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
 
 2. Create a new stack in CloudFormation and upload **template.json**.
 
-3. Specify a new IAM username, your bucket name, and Lambda Layer ARNs for OpenCV and NumPy.
+3. Specify a new IAM username, new queue name, your existing bucket name, and Lambda Layer ARNs for OpenCV and NumPy.
  
     OpenCV / NumPy are custom layers I compiled myself. I provided the zips in the "Lambda Layers" directory so you can upload them and use them as needed.    
     

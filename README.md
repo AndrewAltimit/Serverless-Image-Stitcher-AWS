@@ -1,15 +1,18 @@
 # Overview
 This project uses an advanced image stitching algorithm (implementation details uploaded in PDF). The program also includes searching capabilities for finding same scene images and automatic stitching. Just specify a folder for the program to explore and a result will be generated if matches are found. 
 
-
-![ExampleImage](/src/examples/tree-mrc/image1_image2_image3.jpg)
-
-
 Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are automatically ingested via a Lambda Function (using a Lambda Trigger). The job requires the S3 bucket name, source folder, and destination folder in order to do a search and merge task. A CloudFormation template has been provided to help automate the deployment process.
  
- 
  See the uploaded PDF for implementation details and experimental results. All images used in the paper can be found in the **src/examples** directory.
-
+ 
+ <p align="center">
+  <img width="300" src="/src/examples/tree-mrc/image1_image2_image3.jpg"><br><b>Example of 'tree-mrc'</b>
+</p>
+ 
+ ## Contributors
+<a href="https://github.com/AndrewAltimit/Image-Stitcher/graphs/contributors">
+  <img src="https://contributors-img.firebaseapp.com/image?repo=AndrewAltimit/Image-Stitcher" />
+</a>
 
 ## Required Libs and Environment
 * Python 3.6

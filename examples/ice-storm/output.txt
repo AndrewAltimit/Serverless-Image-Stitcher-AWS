@@ -1,7 +1,0 @@
-image 0 and 1 ratio: 0.921  matches: 387 VALID_MATCH: True
-Anchor candidate found (2 images): 0
-
-image 1 and 0 ratio: 0.910  matches: 383 VALID_MATCH: True
-Anchor candidate found (2 images): 1
-
-Best Anchor: image index 0

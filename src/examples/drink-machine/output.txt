@@ -1,0 +1,10 @@
+image 0 and 1 ratio: 0.393  matches: 70 VALID_MATCH: False
+image 0 and 2 ratio: 0.667  matches: 12 VALID_MATCH: False
+
+image 1 and 0 ratio: 0.312  matches: 73 VALID_MATCH: False
+image 1 and 2 ratio: 0.474  matches: 93 VALID_MATCH: False
+
+image 2 and 0 ratio: 0.300  matches: 6 VALID_MATCH: False
+image 2 and 1 ratio: 0.479  matches: 92 VALID_MATCH: False
+
+No panorama candidates found. Are you sure it is from the same scene?

@@ -1,0 +1,229 @@
+{
+	"Parameters": {
+		"BucketName": {
+		  "Description": "Your Bucket Name",
+		  "Type": "String"
+		},
+		"QueueName": {
+		  "Description": "The name for the queue that will be created in SQS",
+		  "Type": "String",
+		  "Default": "stitching-queue"
+		},
+		"ServiceUsername": {
+		  "Description": "Username for the IAM account which will be created",
+		  "Type": "String",
+		  "Default": "DefaultUser"
+		},
+		"OpenCVLambdaLayerARN": {
+		  "Description": "ARN of a Python 3.6 OpenCV 3 Lambda Layer",
+		  "Type": "String"
+		},
+		"NumPyLambdaLayerARN": {
+		  "Description": "ARN of a Python 3.6 Numpy Lambda Layer",
+		  "Type": "String"
+		}
+	},
+  "Resources": {
+    "IAMLambdaServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "LambdaServiceRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "LambdaServiceRolePolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Action": [
+                    "s3:Get*",
+                    "s3:List*",
+					"s3:PutObject"
+                  ],
+                  "Resource": "*",
+                  "Effect": "Allow"
+                },
+				{
+                  "Action": [
+                    "sqs:ReceiveMessage",
+					"sqs:DeleteMessage",
+					"sqs:GetQueueAttributes"
+                  ],
+                  "Resource": "*",
+                  "Effect": "Allow"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "IAMAPIServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "LambdaAPIServiceRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "API_Service_Role_Policy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Action": "lambda:InvokeFunction",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "LambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Effect": "Allow"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "ImageStitch",
+        "Description": "Stitch images from S3 source folder and upload the result back to S3",
+        "Code": {
+          "S3Bucket": {"Ref": "BucketName"},
+          "S3Key": "Image_Stitcher.zip"
+        },
+        "Handler": "Image_Stitcher.stitch",
+        "Runtime": "python3.6",
+		"Layers": [
+			{"Ref": "OpenCVLambdaLayerARN"},
+			{"Ref": "NumPyLambdaLayerARN"}],
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IAMLambdaServiceRole",
+            "Arn"
+          ]
+        },
+        "Timeout": 300
+      }
+    },
+	"EventSourceMappingSQSMyQueue":{
+         "Type":"AWS::Lambda::EventSourceMapping",
+         "Properties":{
+            "BatchSize":1,
+            "EventSourceArn":{
+               "Fn::GetAtt":[
+                  "MyQueue",
+                  "Arn"
+               ]
+            },
+            "FunctionName":{
+               "Fn::GetAtt":[
+				  "LambdaFunction",
+                  "Arn"
+               ]
+            },
+            "Enabled":"True"
+         }
+      },
+      "MyQueue":{
+         "Type":"AWS::SQS::Queue",
+         "Properties":{
+            "QueueName": {"Ref": "QueueName"},
+			"VisibilityTimeout": 300
+         }
+      },
+   "ImageStitchLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "DependsOn": "LambdaFunction",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/lambda/",
+              {
+                "Ref": "LambdaFunction"
+              }
+            ]
+          ]
+        }
+      }
+    },
+	"APICaller": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "UserName": {"Ref": "ServiceUsername"}
+      }
+    },
+    "BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {"Ref": "BucketName"},
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject",
+				"s3:PutObject"
+              ],
+              "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "BucketName"}, "/*"]]},
+              "Condition": {},
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::Join": [
+                      ":",
+                      [
+                        "arn:aws:iam:",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+						{"Fn::Join": ["", ["user/", {"Ref": "ServiceUsername"}]]}
+                      ]
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

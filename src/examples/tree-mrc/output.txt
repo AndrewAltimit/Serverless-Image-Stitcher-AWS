@@ -1,0 +1,22 @@
+image 0 and 1 ratio: 0.929  matches: 1425 VALID_MATCH: True
+Anchor candidate found (2 images): 0
+image 0 and 2 ratio: 0.702  matches: 304 VALID_MATCH: True
+Anchor candidate found (3 images): 0
+
+image 1 and 0 ratio: 0.916  matches: 1432 VALID_MATCH: True
+Anchor candidate found (2 images): 1
+image 1 and 2 ratio: 0.806  matches: 915 VALID_MATCH: True
+Anchor candidate found (3 images): 1
+
+image 2 and 0 ratio: 0.672  matches: 269 VALID_MATCH: False
+image 2 and 1 ratio: 0.896  matches: 1021 VALID_MATCH: True
+Anchor candidate found (2 images): 2
+image 2 and 3 ratio: 0.871  matches: 515 VALID_MATCH: True
+Anchor candidate found (3 images): 2
+
+image 3 and 0 ratio: 0.580  matches: 29 VALID_MATCH: False
+image 3 and 1 ratio: 0.638  matches: 113 VALID_MATCH: False
+image 3 and 2 ratio: 0.745  matches: 423 VALID_MATCH: True
+Anchor candidate found (2 images): 3
+
+Best Anchor: image index 1

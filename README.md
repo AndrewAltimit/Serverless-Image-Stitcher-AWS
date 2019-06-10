@@ -6,7 +6,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
  See the uploaded PDF for implementation details and experimental results. All images used in the paper can be found in the **src/examples** directory.
  
  <p align="center">
-  <img width="300" src="/src/examples/tree-mrc/image1_image2_image3.jpg"><br><b>Example of 'tree-mrc'</b>
+  <img width="300" src="/src/examples/tree-mrc/example.png"><br><b>Example of 'tree-mrc'</b>
 </p>
  
  ## Contributors

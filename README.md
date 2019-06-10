@@ -57,7 +57,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
 
 ## Running Locally
 
-****Create Panorama Locally****
+****Create Panorama****
 
 The src directory contains main.py which is used for image stitching.
 

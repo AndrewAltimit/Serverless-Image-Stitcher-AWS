@@ -11,7 +11,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
  
  ## Contributors
 <a href="https://github.com/AndrewAltimit/Image-Stitcher/graphs/contributors">
-  <img src="https://contributors-img.firebaseapp.com/image?repo=AndrewAltimit/Image-Stitcher" />
+  <img src="contributors.png" />
 </a>
 
 ## Required Libs and Environment

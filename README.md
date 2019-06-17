@@ -10,7 +10,7 @@ Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are aut
 </p>
  
  ## Contributors
-<a href="https://github.com/AndrewAltimit/Image-Stitcher/graphs/contributors">
+<a href="https://github.com/AndrewAltimit/Serverless-Image-Stitcher-AWS/graphs/contributors">
   <img src="contributors.png" />
 </a>
 

@@ -1,4 +1,4 @@
-# Overview
+# Better Title
 This utility is an advanced image stitching platform (implementation details uploaded in PDF) which can be deployed as a serverless app on AWS using CloudFormation, SQS, and Lambda. The utility also includes searching capabilities for finding same scene images and automatic stitching. Just specify a folder for the program to explore and a result will be generated if matches are found. 
 
 Jobs are submitted via SQS - Simple Queue Service. Messages on the queue are automatically ingested via a Lambda Function (using a Lambda Trigger). The job requires the S3 bucket name, source folder, and destination folder in order to do a search and merge task. A CloudFormation template has been provided to help automate the deployment process.
